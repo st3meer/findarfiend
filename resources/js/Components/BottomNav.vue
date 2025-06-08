@@ -13,7 +13,7 @@
     <span>Friends</span>
   </v-btn>
 
-  <v-btn value="Events" to="/events">
+  <v-btn value="Events" to="/new_friends">
     <v-icon>mdi-star-box</v-icon>
 
     <span>Events</span>

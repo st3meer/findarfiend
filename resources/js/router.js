@@ -23,14 +23,14 @@ const router = createRouter({
       component: () => import('./Pages/friends.vue')
     },
     {
-      path: '/events',
-      name: 'Events',
-      component: () => import('./Pages/events.vue')
+      path: '/new_friends',
+      name: 'Search for friends',
+      component: () => import('./Pages/searchUsers.vue')
     },
     {
-      path: '/chats',
-      name: 'Chats',
-      component: () => import('./Pages/chats.vue')
+      path: '/freiendship_requests',
+      name: 'Freiendship requests',
+      component: () => import('./Pages/friendRequests.vue')
     },
   ],
 })

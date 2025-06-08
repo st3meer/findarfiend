@@ -17,6 +17,21 @@ const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 const vuetify = createVuetify({
     components,
     directives,
+   theme: {
+    defaultTheme: 'dark',
+    themes: {
+      dark: {
+        dark: true,
+        colors: {
+          background: '#121212',
+          surface: '#1e1e1e',
+          primary: '#BB86FC',
+          secondary: '#03DAC6',
+          error: '#CF6679',
+        },
+      },
+    },
+  },
   });
 
   

@@ -1,13 +1,14 @@
 <script>
 //import Vmenu from './vmenu.vue';
+//import {Link} from '@inertiajs/vue3';
 
 export default {
     data: () => ({
       items: [
-        { title: 'My profile' },
-        { title: 'Settings' },
-        { title: 'Click Me' },
-        { title: 'Click Me 2' },
+        { link:"/new_friends", title: 'Add friends' },
+        { link:"/freiendship_requests", title: 'Friendsip requests' },
+        { link:"/login", title: 'Login' },
+        { link:"/register", title: 'register' },
       ],
     }),
     
@@ -30,7 +31,8 @@ export default {
 
     <v-menu location="bottom start " activator="#menu-activator">
       <v-list>
-        <v-list-item v-for="(item, index) in items" :key="index" :value="index">
+        
+        <v-list-item v-for="(item, index) in items" :key="index" :value="index" :href=item.link>
           <v-list-item-title>{{ item.title }}</v-list-item-title>
         </v-list-item>
       </v-list>
