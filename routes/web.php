@@ -3,19 +3,8 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
-
-
-Route::get('/', function () {
-    return Inertia::render('welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-});
-
-
 
 
 Route::get('/dashboard', function () {
@@ -35,5 +24,23 @@ Route::middleware('auth')->group(function () {
     Route::get('/friends/requests', [FriendController::class, 'incomingRequests']);
     Route::post('/friends/respond', [FriendController::class, 'respondRequest']);
 });
+Route::middleware('auth')->get('/friends/api', function (Request $request) {
+    $user = $request->user();
+
+    $friends = $user->friendRequests()
+        ->where('status', 'accepted')
+        ->get()
+        ->map(function ($request) use ($user) {
+            return $request->sender_id === $user->id ? $request->receiver : $request->sender;
+        })
+        ->values();
+
+    return response()->json($friends);
+});
 
 require __DIR__.'/auth.php';
+
+
+Route::get('/{any}', function () {
+    return Inertia::render('Dashboard'); // like 'Dashboard' or 'NotFound'
+})->where('any', '.*');

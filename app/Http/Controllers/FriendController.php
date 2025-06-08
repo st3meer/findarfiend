@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\User;
+use Illuminate\Support\Facades\DB;
+use App\Models\FriendRequest;
 
 class FriendController extends Controller
 {
@@ -53,5 +56,23 @@ public function respondRequest(Request $request)
     }
 
     return response()->json(['status' => 'responded']);
+}
+public function friends()
+{
+    $user = auth()->user();
+
+    $friends = FriendRequest::where(function ($query) use ($user) {
+        $query->where('sender_id', $user->id)
+              ->orWhere('receiver_id', $user->id);
+    })
+    ->where('status', 'accepted')
+    ->with(['sender', 'receiver'])
+    ->get()
+    ->map(function ($request) use ($user) {
+        // Return the "other" user in the friendship
+        return $request->sender_id === $user->id ? $request->receiver : $request->sender;
+    });
+
+    return response()->json($friends);
 }
 }
