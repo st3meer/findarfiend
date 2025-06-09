@@ -32,6 +32,11 @@ const router = createRouter({
       name: 'Freiendship requests',
       component: () => import('./Pages/friendRequests.vue')
     },
+    {
+      path: '/account',
+      name: 'My Account',
+      component: () => import('./Pages/myAccount.vue')
+    },
   ],
 })
 

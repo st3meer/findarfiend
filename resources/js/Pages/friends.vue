@@ -8,8 +8,13 @@
     <v-row v-else>
       <v-col v-for="friend in friends" :key="friend.id" cols="12" md="6" lg="4">
         <v-card>
-          <v-card-title>{{ friend.name }}</v-card-title>
-          <v-card-subtitle>{{ friend.email }}</v-card-subtitle>
+          <v-card-title>
+            <span class="text-2xl mr-2">{{ friend.avatar }}</span>
+            {{ friend.name }}
+        </v-card-title>
+        <v-card-text v-if="friend.distance_km !== null">
+            Distance: {{ friend.distance_km }} km
+        </v-card-text>
         </v-card>
       </v-col>
     </v-row>

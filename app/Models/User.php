@@ -21,6 +21,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'avatar', 
     ];
 
     /**
@@ -48,9 +49,31 @@ class User extends Authenticatable
 
 public function friendRequests()
 {
-    // Friend requests received by the user
+    // Friend requests received by the user merged with ones sent by the user
     $a = $this->hasMany(FriendRequest::class, 'receiver_id') ->get();
     $b = $this->hasMany(FriendRequest::class, 'sender_id') ->get();
     return $a->merge($b);
+}
+
+public function distanceTo(User $otherUser)
+{
+    if (!$this->latitude || !$this->longitude || !$otherUser->latitude || !$otherUser->longitude) {
+        return null;
+    }
+
+    $earthRadius = 6371; // Radius of the Earth in kilometers
+
+    $latFrom = deg2rad($this->latitude);
+    $lonFrom = deg2rad($this->longitude);
+    $latTo = deg2rad($otherUser->latitude);
+    $lonTo = deg2rad($otherUser->longitude);
+
+    $latDelta = $latTo - $latFrom;
+    $lonDelta = $lonTo - $lonFrom;
+
+    $angle = 2 * asin(sqrt(pow(sin($latDelta / 2), 2) +
+        cos($latFrom) * cos($latTo) * pow(sin($lonDelta / 2), 2)));
+
+    return round($earthRadius * $angle, 1); // 1 decimal place
 }
 }

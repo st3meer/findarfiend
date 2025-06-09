@@ -1,7 +1,7 @@
 <script>
 //import Vmenu from './vmenu.vue';
 //import {Link} from '@inertiajs/vue3';
-
+import axios from 'axios'
 export default {
     data: () => ({
       items: [
@@ -10,9 +10,25 @@ export default {
         { link:"/login", title: 'Login' },
         { link:"/register", title: 'register' },
       ],
-    }),
-    
-  }
+     user: null,
+  }),
+
+  mounted() {
+    this.fetchUser()
+  },
+
+  methods: {
+    async fetchUser() {
+      try {
+        const response = await axios.get('/api/me')
+        this.user = response.data
+      } catch (error) {
+        console.error('Error fetching user:', error)
+      }
+    },
+  },
+}
+  
 
 
 </script>
@@ -26,7 +42,12 @@ export default {
 
     <v-app-bar-title>FindAFriend</v-app-bar-title>
     <v-icon>logo</v-icon>
-    
+    <v-spacer />
+
+    <!-- Emoji avatar shown if user is logged in -->
+    <div v-if="user" class="mr-4 text-2xl">
+      {{ user.avatar || '⭕️' }}
+    </div>
     </v-app-bar>
 
     <v-menu location="bottom start " activator="#menu-activator">

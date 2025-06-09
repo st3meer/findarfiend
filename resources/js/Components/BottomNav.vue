@@ -19,10 +19,10 @@
     <span>Events</span>
   </v-btn>
 
-  <v-btn value="Chats" to="/chats">
+  <v-btn value="My Account" to="/account">
     <v-icon>mdi-chat</v-icon>
 
-    <span>Chats</span>
+    <span>My Account</span>
   </v-btn>
 </v-bottom-navigation>
 </template>
