@@ -5,6 +5,8 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use App\Http\Controllers\LocationController;
+
 
 
 Route::get('/dashboard', function () {
@@ -29,7 +31,6 @@ Route::middleware('auth')->get('/friends/api', function (Request $request) {
 
     $friends = $user->friendRequests()
         ->where('status', 'accepted')
-        ->get()
         ->map(function ($request) use ($user) {
             return $request->sender_id === $user->id ? $request->receiver : $request->sender;
         })
@@ -37,6 +38,12 @@ Route::middleware('auth')->get('/friends/api', function (Request $request) {
 
     return response()->json($friends);
 });
+
+
+
+Route::middleware(['auth'])->post('/location', [LocationController::class, 'update']);
+
+Route::post('/location', [LocationController::class, 'update'])->middleware('auth');
 
 require __DIR__.'/auth.php';
 

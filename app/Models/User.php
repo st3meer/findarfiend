@@ -45,4 +45,12 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+public function friendRequests()
+{
+    // Friend requests received by the user
+    $a = $this->hasMany(FriendRequest::class, 'receiver_id') ->get();
+    $b = $this->hasMany(FriendRequest::class, 'sender_id') ->get();
+    return $a->merge($b);
+}
 }

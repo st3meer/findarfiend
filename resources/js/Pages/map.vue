@@ -2,6 +2,7 @@
     import {ref, onMounted } from 'vue';
     import "leaflet/dist/leaflet.css"
     import * as L from 'leaflet';
+    import { router } from '@inertiajs/vue3'
     import SvgIcon from '@jamescoyle/vue-icon';
     import { mdiMapMarker } from '@mdi/js';
 
@@ -21,11 +22,18 @@ function whereAmI() {
     var c_lat = 0;
     var c_lon = 0;
     navigator.geolocation.getCurrentPosition((position) => {
+        const { latitude, longitude } = position.coords
         c_lat = position.coords.latitude;
         c_lon = position.coords.longitude;
+         router.post('/location', { latitude, longitude }, {
+            preserveScroll: true,
+            only: [], // Prevent Inertia page reload
+        });
         //console.log(c_lat, c_lon);
         initialMap.value.setView([c_lat, c_lon], 15);
         L.marker([c_lat, c_lon]).addTo(initialMap.value);
+
+
     });
 }
 whereAmI();
